@@ -37,7 +37,7 @@ jobs:
 
 To disable Rubocop, modify the job:
 
-```
+```yaml
 jobs:
   puppet:
     name: Puppet

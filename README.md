@@ -30,8 +30,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  call-workflow:
-    name: CI
+  puppet:
+    name: Puppet
     uses: ekohl/gha-puppet/.github/workflows/basic.yml@v1
 ```
 
@@ -39,8 +39,8 @@ To disable Rubocop, modify the job:
 
 ```
 jobs:
-  call-workflow:
-    name: CI
+  puppet:
+    name: Puppet
     uses: ekohl/gha-puppet/.github/workflows/basic.yml@v1
     with:
       rubocop: false
@@ -60,8 +60,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  call-workflow:
-    name: CI
+  puppet:
+    name: Puppet
     uses: ekohl/gha-puppet/.github/workflows/beaker.yml@v1
 ```
 
@@ -87,7 +87,7 @@ on:
       - '*'
 
 jobs:
-  call-workflow:
+  deploy:
     name: Deploy to forge
     uses: ekohl/gha-puppet/.github/workflows/release.yml@v1
     with:

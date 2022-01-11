@@ -32,7 +32,7 @@ concurrency:
 jobs:
   puppet:
     name: Puppet
-    uses: ekohl/gha-puppet/.github/workflows/basic.yml@v1
+    uses: voxpupuli/gha-puppet/.github/workflows/basic.yml@v1
 ```
 
 To disable Rubocop, modify the job:
@@ -41,7 +41,7 @@ To disable Rubocop, modify the job:
 jobs:
   puppet:
     name: Puppet
-    uses: ekohl/gha-puppet/.github/workflows/basic.yml@v1
+    uses: voxpupuli/gha-puppet/.github/workflows/basic.yml@v1
     with:
       rubocop: false
 ```
@@ -62,7 +62,7 @@ concurrency:
 jobs:
   puppet:
     name: Puppet
-    uses: ekohl/gha-puppet/.github/workflows/beaker.yml@v1
+    uses: voxpupuli/gha-puppet/.github/workflows/beaker.yml@v1
 ```
 
 ## Calling the release workflow
@@ -88,8 +88,8 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to forge
-    uses: ekohl/gha-puppet/.github/workflows/release.yml@v1
+    name: Deploy
+    uses: voxpupuli/gha-puppet/.github/workflows/release.yml@v1
     with:
       allowed_owner: MY_GITHUB_USERNAME
     secrets:

@@ -92,6 +92,7 @@ jobs:
     uses: ekohl/gha-puppet/.github/workflows/release.yml@v1
     with:
       allowed_owner: MY_GITHUB_USERNAME
-      username: '${{ secrets.PUPPET_FORGE_USERNAME }}'
-      api_key: '${{ secrets.PUPPET_FORGE_API_KEY }}'
+    secrets:
+      username: ${{ secrets.PUPPET_FORGE_USERNAME }}
+      api_key: ${{ secrets.PUPPET_FORGE_API_KEY }}
 ```

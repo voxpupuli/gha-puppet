@@ -24,7 +24,7 @@ jobs:
   deploy:
     name: 'deploy to forge'
     runs-on: ubuntu-latest
-    if: github.repository_owner == allowed_owner
+    if: github.repository_owner == inputs.allowed_owner
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2

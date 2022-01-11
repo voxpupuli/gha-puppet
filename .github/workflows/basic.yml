@@ -1,5 +1,5 @@
 ---
-name: CI
+name: Puppet
 
 on:
   workflow_call:
@@ -17,7 +17,7 @@ on:
 
 jobs:
   setup_matrix:
-    name: 'Setup Test Matrix'
+    name: Static validations
     runs-on: ubuntu-latest
     timeout-minutes: ${{ inputs.timeout_minutes }}
     outputs:
@@ -52,7 +52,7 @@ jobs:
     env:
       BUNDLE_WITHOUT: development:system_tests:release
       PUPPET_VERSION: "~> ${{ matrix.puppet }}.0"
-    name: Puppet ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }})
+    name: ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }})
     steps:
       - uses: actions/checkout@v2
       - name: Setup ruby

@@ -14,9 +14,17 @@ on:
         default: 45
         required: false
         type: number
+      working-directory:
+        description: The working directory where all jobs should be executed. Used for modules in subdirectories like a monorepo or a control repository.
+        default: '.'
+        required: false
+        type: string
 
 jobs:
   setup_matrix:
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
     name: Static validations
     runs-on: ubuntu-latest
     timeout-minutes: ${{ inputs.timeout_minutes }}
@@ -32,6 +40,7 @@ jobs:
         with:
           ruby-version: '3.0'
           bundler-cache: true
+          working-directory: ${{ inputs.working-directory }}
       - name: Run static validations
         run: bundle exec rake validate lint check
       - name: Run rake rubocop
@@ -42,6 +51,9 @@ jobs:
         run: bundle exec metadata2gha --use-fqdn
 
   unit:
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
     needs: setup_matrix
     runs-on: ubuntu-latest
     timeout-minutes: ${{ inputs.timeout_minutes }}
@@ -60,6 +72,7 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
+          working-directory: ${{ inputs.working-directory }}
       - name: Run tests
         run: bundle exec rake parallel_spec
 
@@ -69,3 +82,4 @@ jobs:
     name: Test suite
     steps:
       - run: echo Test suite completed
+        working-directory: '.'

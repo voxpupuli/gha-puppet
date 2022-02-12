@@ -16,12 +16,20 @@ on:
       api_key:
         description: 'The forge API key'
         required: true
+      working-directory:
+        description: The working directory where all jobs should be executed. Used for modules in subdirectories like a monorepo or a control repository.
+        default: '.'
+        required: false
+        type: string
 
 env:
   BUNDLE_WITHOUT: development:test:system_tests
 
 jobs:
   release:
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
     name: 'Puppet Forge'
     runs-on: ubuntu-latest
     if: github.repository_owner == inputs.allowed_owner
@@ -33,6 +41,7 @@ jobs:
         with:
           ruby-version: '3.0'
           bundler-cache: true
+          working-directory: ${{ inputs.working-directory }}
       - name: Build and Release
         env:
           # Configure secrets here:

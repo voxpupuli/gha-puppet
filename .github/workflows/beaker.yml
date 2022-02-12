@@ -19,9 +19,17 @@ on:
         default: 45
         required: false
         type: number
+      working-directory:
+        description: The working directory where all jobs should be executed. Used for modules in subdirectories like a monorepo or a control repository.
+        default: '.'
+        required: false
+        type: string
 
 jobs:
   setup_matrix:
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
     name: Static validations
     runs-on: ubuntu-latest
     timeout-minutes: ${{ inputs.timeout_minutes }}
@@ -37,6 +45,7 @@ jobs:
         with:
           ruby-version: '3.0'
           bundler-cache: true
+          working-directory: ${{ inputs.working-directory }}
       - name: Run static validations
         run: bundle exec rake validate lint check
       - name: Run rake rubocop
@@ -47,6 +56,9 @@ jobs:
         run: bundle exec metadata2gha --use-fqdn --pidfile-workaround ${{ inputs.pidfile_workaround }}
 
   unit:
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
     needs: setup_matrix
     runs-on: ubuntu-latest
     timeout-minutes: ${{ inputs.timeout_minutes }}
@@ -65,10 +77,14 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
+          working-directory: ${{ inputs.working-directory }}
       - name: Run tests
         run: bundle exec rake parallel_spec
 
   acceptance:
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
     needs: setup_matrix
     runs-on: ubuntu-latest
     env:
@@ -86,6 +102,7 @@ jobs:
         with:
           ruby-version: '3.0'
           bundler-cache: true
+          working-directory: ${{ inputs.working-directory }}
       - name: Run tests
         run: bundle exec rake beaker
         env:
@@ -100,3 +117,5 @@ jobs:
     name: Test suite
     steps:
       - run: echo Test suite completed
+        # explicitly run at the root dir. In case people set working-directory this will otherwise fail (because this jobs doesn't clone the repo and the subdir doesn't exist)
+        working-directory: '.'

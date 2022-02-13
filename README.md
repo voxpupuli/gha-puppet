@@ -12,6 +12,11 @@ They are heavily focused on the workflow that Vox Pupuli uses, which rely on rak
 
 For more information, see [GitHub's workflow reuse documentation](https://docs.github.com/en/actions/learn-github-actions/reusing-workflows).
 
+Vox Pupuli uses these workflows to test modules. You can reuse them for your own
+modules (as documented in the next section). But they can also be configured to
+test modules that are vendored in a controlrepository or a monorepository. See
+[Working with a subdirectory](#Working-with-a-subdirectory) for details.
+
 ## Gemfile integration example
 
 Below is an annotated example Gemfile which should provide a working environment. It's the minimum needed.
@@ -160,4 +165,52 @@ jobs:
     secrets:
       username: ${{ secrets.PUPPET_FORGE_USERNAME }}
       api_key: ${{ secrets.PUPPET_FORGE_API_KEY }}
+```
+
+## Working with a subdirectory
+
+Assume you've a controlrepository or a monorepository:
+
+```
+.
+├── bin
+│   └── config_script.sh
+├── data
+│   └── nodes
+├── environment.conf
+├── hiera.yaml
+├── LICENSE
+├── manifests
+│   └── site.pp
+├── Puppetfile
+├── README.md
+└── site
+    └── profiles
+        ├── files
+        ├── Gemfile
+        ├── manifests
+        ├── metadata.json
+        ├── Rakefile
+        ├── REFERENCE.md
+        └── templates
+```
+
+You can use our workflow for the vendored module (in this example `profiles`) as
+well. They all support a `working-directory` input that you can set to the
+vendored module:
+
+```yaml
+name: CI
+
+on: pull_request
+
+concurrency:
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  puppet:
+    name: Puppet
+    uses: voxpupuli/gha-puppet/.github/workflows/beaker.yml@v1
+    working-directory: ./site/profiles
 ```

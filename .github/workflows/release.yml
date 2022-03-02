@@ -9,6 +9,11 @@ on:
         description: 'Only allow this owner'
         required: true
         type: string
+      working-directory:
+        description: The working directory where all jobs should be executed. Used for modules in subdirectories like a monorepo or a control repository.
+        default: '.'
+        required: false
+        type: string
     secrets:
       username:
         description: 'The forge username to use'
@@ -16,11 +21,6 @@ on:
       api_key:
         description: 'The forge API key'
         required: true
-      working-directory:
-        description: The working directory where all jobs should be executed. Used for modules in subdirectories like a monorepo or a control repository.
-        default: '.'
-        required: false
-        type: string
 
 env:
   BUNDLE_WITHOUT: development:test:system_tests

@@ -24,6 +24,11 @@ on:
         default: '.'
         required: false
         type: string
+      cache-version:
+        description: The cache version to pass to setup-ruby
+        default: '0'
+        required: false
+        type: string
 
 jobs:
   setup_matrix:
@@ -45,6 +50,7 @@ jobs:
         with:
           ruby-version: '3.0'
           bundler-cache: true
+          cache-version: ${{ inputs.cache-version }}
           working-directory: ${{ inputs.working-directory }}
       - name: Run static validations
         run: bundle exec rake validate lint check
@@ -77,6 +83,7 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
+          cache-version: ${{ inputs.cache-version }}
           working-directory: ${{ inputs.working-directory }}
       - name: Run tests
         run: bundle exec rake parallel_spec
@@ -102,6 +109,7 @@ jobs:
         with:
           ruby-version: '3.0'
           bundler-cache: true
+          cache-version: ${{ inputs.cache-version }}
           working-directory: ${{ inputs.working-directory }}
       - name: Run tests
         run: bundle exec rake beaker

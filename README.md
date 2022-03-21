@@ -96,7 +96,7 @@ name: CI
 on: pull_request
 
 concurrency:
-  group: ${{ github.head_ref }}
+  group: ${{ github.ref_name }}
   cancel-in-progress: true
 
 jobs:
@@ -126,7 +126,7 @@ name: CI
 on: pull_request
 
 concurrency:
-  group: ${{ github.head_ref }}
+  group: ${{ github.ref_name }}
   cancel-in-progress: true
 
 jobs:
@@ -205,7 +205,7 @@ name: CI
 on: pull_request
 
 concurrency:
-  group: ${{ github.head_ref }}
+  group: ${{ github.ref_name }}
   cancel-in-progress: true
 
 jobs:

@@ -214,3 +214,26 @@ jobs:
     uses: voxpupuli/gha-puppet/.github/workflows/beaker.yml@v1
     working-directory: ./site/profiles
 ```
+
+## Puppetfile checks
+You can use the puppetfile workflow to check various POI on your puppetfile.  To use this workflow do the following
+
+```yaml
+# This is a basic workflow to help you get started with Actions
+
+name: Puppetfile checks 
+
+# Controls when the workflow will run
+on:
+  push:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  puppetfile:
+    name: puppetfile 
+    uses:  voxpupuli/gha-puppet/.github/workflows//puppetfile.yml@master
+```

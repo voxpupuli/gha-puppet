@@ -214,3 +214,31 @@ jobs:
     uses: voxpupuli/gha-puppet/.github/workflows/beaker.yml@v1
     working-directory: ./site/profiles
 ```
+
+## Cloning private repos
+If your CI pipline will clone private repos via the .fixtures.yml or Puppetfile
+you will need to supply a ssh private key for the runner to use during the job.
+
+That ssh private key can be a machine user's ssh key, or github deploy key.  As long 
+as the key has access to the repos it will need to clone.
+
+You will need to create a github secret for the private key named `PRIVATE_SSH_KEY`
+
+An example CI workflow is below for this kind of setup.
+
+For reference: https://stackoverflow.com/questions/57612428/cloning-private-github-repository-within-organisation-in-actions
+
+
+```yaml
+name: CI
+
+on: pull_request
+
+jobs:
+  puppet:
+    - name: Setup deploy key
+    run: eval `ssh-agent -s` && ssh-add - <<< '${{ secrets.PRIVATE_SSH_KEY }}'
+    - name: Puppet
+    uses: voxpupuli/gha-puppet/.github/workflows/pdk-basic.yml@master
+
+```

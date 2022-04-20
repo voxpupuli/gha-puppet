@@ -1,0 +1,36 @@
+name: PDK basic
+
+on:
+  workflow_call:
+    inputs:
+      container_image:
+        description: Image to use when running tests
+        default: 'puppet/puppet-dev-tools:2022-04-21-e44b72b'
+        required: false
+        type: string
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        puppet-version: [7]
+    container: ${{ inputs.container_image }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: action-pdk-validate-puppet-${{ matrix.puppet-version }}
+        run: pdk validate --puppet-version=${{ matrix.puppet-version }}
+
+  unit-puppet:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        puppet-version: [5, 6, 7]
+    container: ${{ inputs.container_image }}
+    needs: validate
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: action-pdk-test-unit-puppet-${{ matrix.puppet-version }}
+        run: pdk test unit --puppet-version=${{ matrix.puppet-version }}

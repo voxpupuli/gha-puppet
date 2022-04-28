@@ -12,25 +12,30 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        puppet-version: [7]
     container: ${{ inputs.container_image }}
-
+    outputs:
+        puppet_unit_test_matrix: ${{ steps.get-outputs.outputs.puppet_unit_test_matrix }}
+        github_action_test_matrix: ${{ steps.get-outputs.outputs.github_action_test_matrix }}
     steps:
       - uses: actions/checkout@v2
-      - name: action-pdk-validate-puppet-${{ matrix.puppet-version }}
-        run: pdk validate --puppet-version=${{ matrix.puppet-version }}
+      - name: action-pdk-validate-puppet-7
+        run: pdk validate --puppet-version=7
+      - run: gem install puppet_metadata --no-document 
+      - name: Setup Test Matrix
+        id: get-outputs
+        run: metadata2gha --use-fqdn
+  
 
   unit-puppet:
+    needs: 
+      - validate
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        puppet-version: [5, 6, 7]
+        include: ${{fromJson(needs.validate.outputs.puppet_unit_test_matrix)}}
     container: ${{ inputs.container_image }}
-    needs: validate
     steps:
       - uses: actions/checkout@v2
-
-      - name: action-pdk-test-unit-puppet-${{ matrix.puppet-version }}
-        run: pdk test unit --puppet-version=${{ matrix.puppet-version }}
+      - name: action-pdk-test-unit-puppet-${{ matrix.puppet }}
+        run: pdk test unit --puppet-version=${{ matrix.puppet }}

@@ -137,7 +137,7 @@ jobs:
 
 ### Install additional packages
 
-the basic and the beaker workflow support the `additional_packages` input string. You can use that to install additional packages. The String is passed to `sudo apt-get install -y`
+The basic and the beaker workflow support the `additional_packages` input string. You can use that to install additional packages. The String is passed to `sudo apt-get install -y`
 
 ```yaml
 jobs:

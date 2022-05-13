@@ -29,6 +29,11 @@ on:
         default: '0'
         required: false
         type: string
+      additional_packages:
+        description: String of additional packages that should be installed
+        default: ''
+        required: false
+        type: string
 
 jobs:
   setup_matrix:
@@ -45,6 +50,9 @@ jobs:
       BUNDLE_WITHOUT: development:system_tests:release
     steps:
       - uses: actions/checkout@v2
+      - name: install additional packages
+        if: ${{ inputs.additional_packages != '' }}
+        run: sudo apt-get install -y ${{ inputs.additional_packages }}
       - name: Setup ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -78,6 +86,9 @@ jobs:
     name: ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }})
     steps:
       - uses: actions/checkout@v2
+      - name: install additional packages
+        if: ${{ inputs.additional_packages != '' }}
+        run: sudo apt-get install -y ${{ inputs.additional_packages }}
       - name: Setup ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -104,6 +115,9 @@ jobs:
     name: "${{ matrix.puppet.value }} - ${{ matrix.setfile.name }}"
     steps:
       - uses: actions/checkout@v2
+      - name: install additional packages
+        if: ${{ inputs.additional_packages != '' }}
+        run: sudo apt-get install -y ${{ inputs.additional_packages }}
       - name: Setup ruby
         uses: ruby/setup-ruby@v1
         with:

@@ -135,6 +135,19 @@ jobs:
     uses: voxpupuli/gha-puppet/.github/workflows/beaker.yml@v1
 ```
 
+### Install additional packages
+
+The basic and the beaker workflow support the `additional_packages` input string. You can use that to install additional packages. The String is passed to `sudo apt-get install -y`
+
+```yaml
+jobs:
+  puppet:
+    name: Puppet
+    uses: voxpupuli/gha-puppet/.github/workflows/basic.yml@v1
+    with:
+      additional_packages: 'libaugeas-dev augeas-tools'
+```
+
 ## Calling the release workflow
 
 The release workflow relies on [puppet-blacksmith](https://github.com/voxpupuli/puppet-blacksmith) and in particular the `module:push` rake task.

@@ -1,0 +1,46 @@
+name: Puppetfile checks
+
+on:
+  workflow_call:
+    inputs:
+      container_image:
+        description: Image to use when running tests
+        default: 'puppet/puppet-dev-tools:2022-04-21-e44b72b'
+        required: false
+        type: string
+jobs:
+  r10k_validate:
+    runs-on: ubuntu-latest
+    container: ${{ inputs.container_image }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: validate Puppetfile
+        run: rake -f /Rakefile r10k:validate
+  r10k_check_dups:
+    runs-on: ubuntu-latest
+    container: ${{ inputs.container_image }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check for puppetfile duplicates
+        run: rake -f /Rakefile r10k:duplicates
+  r10k_syntax:
+    runs-on: ubuntu-latest
+    container: ${{ inputs.container_image }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check for puppetfile syntax correctness
+        run: rake -f /Rakefile r10k:syntax
+  r10k_deprecation:
+    runs-on: ubuntu-latest
+    container: ${{ inputs.container_image }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check for puppetfile module deprecations
+        run: rake -f /Rakefile r10k:deprecation          
+  r10k_find_outdated:
+    runs-on: ubuntu-latest
+    container: ${{ inputs.container_image }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check for outdated modules
+        run: rake -f /Rakefile r10k:dependencies    

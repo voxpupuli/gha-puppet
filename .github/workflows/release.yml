@@ -35,7 +35,7 @@ jobs:
     if: github.repository_owner == inputs.allowed_owner
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:

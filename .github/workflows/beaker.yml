@@ -34,6 +34,11 @@ on:
         default: ''
         required: false
         type: string
+      beaker_hypervisor:
+        description: The hypervisor beaker will use to start containers/VMs
+        default: docker
+        required: false
+        type: string
 
 jobs:
   setup_matrix:
@@ -130,6 +135,7 @@ jobs:
         env:
           BEAKER_PUPPET_COLLECTION: ${{ matrix.puppet.collection }}
           BEAKER_setfile: ${{ matrix.setfile.value }}
+          BEAKER_HYPERVISOR: ${{ inputs.beaker_hypervisor }}
 
   tests:
     needs:

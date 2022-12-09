@@ -109,7 +109,7 @@ jobs:
       run:
         working-directory: ${{ inputs.working-directory }}
     needs: setup_matrix
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     env:
       BUNDLE_WITHOUT: development:test:release
     strategy:

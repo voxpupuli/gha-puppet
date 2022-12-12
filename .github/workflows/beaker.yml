@@ -39,6 +39,11 @@ on:
         default: docker
         required: false
         type: string
+      domain:
+        description: The domain that will be used for the beaker instances
+        default: ${{ github.run_attempt }}-${{ github.run_id }}-${{ github.sha }}.example.com
+        required: false
+        type: string
 
 jobs:
   setup_matrix:
@@ -72,7 +77,7 @@ jobs:
         if: ${{ inputs.rubocop }}
       - name: Setup Test Matrix
         id: get-outputs
-        run: bundle exec metadata2gha --use-fqdn --pidfile-workaround ${{ inputs.pidfile_workaround }}
+        run: bundle exec metadata2gha --domain ${{ inputs.domain }} --pidfile-workaround ${{ inputs.pidfile_workaround }}
 
   unit:
     defaults:

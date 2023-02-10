@@ -41,7 +41,7 @@ on:
         type: string
       domain:
         description: The domain that will be used for the beaker instances
-        default: ${{ github.run_attempt }}-${{ github.run_id }}-${{ github.sha }}.example.com
+        default: "n${{ github.run_attempt }}-${{ github.run_id }}-${{ github.sha }}.example.com"
         required: false
         type: string
 

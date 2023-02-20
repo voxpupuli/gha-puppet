@@ -22,6 +22,8 @@ test modules that are vendored in a controlrepository or a monorepository. See
 Below is an annotated example Gemfile which should provide a working environment. It's the minimum needed.
 
 ```ruby
+source 'https://rubygems.org'
+
 # The development group is intended for developer tooling. CI will never install this.
 group :development do
 end

@@ -29,6 +29,11 @@ on:
         default: ''
         required: false
         type: string
+      unit_runs_on:
+        description: the runner group used for unit jobs run on
+        default: ubuntu-latest
+        required: false
+        type: string
 
 jobs:
   setup_matrix:
@@ -70,7 +75,7 @@ jobs:
       run:
         working-directory: ${{ inputs.working-directory }}
     needs: setup_matrix
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.unit_runs_on }}
     timeout-minutes: ${{ inputs.timeout_minutes }}
     strategy:
       fail-fast: false

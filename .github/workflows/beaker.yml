@@ -44,6 +44,16 @@ on:
         default: "example.com"
         required: false
         type: string
+      unit_runs_on:
+        description: the runner group used for unit jobs run on
+        default: ubuntu-latest
+        required: false
+        type: string
+      acceptance_runs_on:
+        description: the runner group used for acceptance jobs run on
+        default: ubuntu-20.04
+        required: false
+        type: string
 
 jobs:
   setup_matrix:
@@ -85,7 +95,7 @@ jobs:
       run:
         working-directory: ${{ inputs.working-directory }}
     needs: setup_matrix
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.unit_runs_on }}
     timeout-minutes: ${{ inputs.timeout_minutes }}
     strategy:
       fail-fast: false
@@ -115,7 +125,7 @@ jobs:
       run:
         working-directory: ${{ inputs.working-directory }}
     needs: setup_matrix
-    runs-on: ubuntu-20.04
+    runs-on: ${{ inputs.acceptance_runs_on }}
     env:
       BUNDLE_WITHOUT: development:test:release
     strategy:

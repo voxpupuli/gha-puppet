@@ -1,13 +1,13 @@
 name: 🛢️ Build and publish a container
 
 on:
-  push:
-    paths-ignore:
-      - '.github/**'
-    branches:
-      - 'main'
-    tags:
-      - '*'
+  workflow_call:
+    inputs:
+      build_arch:
+        description: What arch to build for. Comma seperated list
+        default: linux/amd64
+        required: true
+        type: string
 
 jobs:
   build-and-push-image:
@@ -64,7 +64,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          # don't know yet how to parameterize this
-          # platforms: linux/amd64,linux/arm64
+          platforms: ${{ inputs.build_arch }}
           push: true
           tags: ${{ steps.tags.outputs.tags }}

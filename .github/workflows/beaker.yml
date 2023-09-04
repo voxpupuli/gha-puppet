@@ -70,7 +70,7 @@ jobs:
       BUNDLE_WITHOUT: development:system_tests:release
       PUPPET_GEM_VERSION: "~> 7.0"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: install additional packages
         if: ${{ inputs.additional_packages != '' }}
         run: sudo apt-get install -y ${{ inputs.additional_packages }}
@@ -106,7 +106,7 @@ jobs:
       PUPPET_GEM_VERSION: "~> ${{ matrix.puppet }}.0"
     name: ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }})
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: install additional packages
         if: ${{ inputs.additional_packages != '' }}
         run: sudo apt-get install -y ${{ inputs.additional_packages }}
@@ -135,7 +135,7 @@ jobs:
         # TODO: beaker_fact_matrix input
     name: "${{ matrix.puppet.value }} - ${{ matrix.setfile.name }}"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: install additional packages
         if: ${{ inputs.additional_packages != '' }}
         run: sudo apt-get install -y ${{ inputs.additional_packages }}

@@ -150,7 +150,7 @@ jobs:
         run: bundle exec rake beaker
         env:
           BEAKER_PUPPET_COLLECTION: ${{ matrix.puppet.collection }}
-          BEAKER_setfile: ${{ matrix.setfile.value }}
+          BEAKER_SETFILE: ${{ matrix.setfile.value }}
           BEAKER_HYPERVISOR: ${{ inputs.beaker_hypervisor }}
 
   tests:

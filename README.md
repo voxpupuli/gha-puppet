@@ -36,26 +36,21 @@ group :test do
   # CI will typically set it to '~> 7.0' to get 7.x
   gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '>= 0', require: false
   # Needed to build the test matrix based on metadata
-  gem 'puppet_metadata', '~> 1.10',  require: false
-  # Needed for the rake tasks
-  gem 'puppetlabs_spec_helper', '>= 2.16.0', '< 5', require: false
-  # Rubocop versions are also specific so it's recommended
-  # to be precise. Can be turned off via a parameter
-  gem 'rubocop', require: false
+  gem 'puppet_metadata', '~> 3.2',  require: false
+  # metagem that pulls in all further requirements
+  gem 'voxpupuli-test', '~> 7.0', require: false
 end
 
 # The system_tests group is used in gha-puppet's beaker workflow.
 # Consider using https://github.com/voxpupuli/voxpupuli-acceptance
 group :system_tests do
-  gem 'beaker', require: false
-  gem 'beaker-docker', require: false
-  gem 'beaker-rspec', require: false
+  gem 'voxpupuli-acceptance', '~> 2.1', require: false
 end
 
 # The release group is used in gha-puppet's release workflow
 # Consider using https://github.com/voxpupuli/voxpupuli-release
 group :release do
-  gem 'puppet-blacksmith', '~> 6.0', require: false
+  gem 'voxpupuli-release', '~> 3.0', '>= 3.0.1'
 end
 ```
 

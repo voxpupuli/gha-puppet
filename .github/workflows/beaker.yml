@@ -133,7 +133,7 @@ jobs:
       matrix:
         include: ${{fromJson(needs.setup_matrix.outputs.github_action_test_matrix)}}
         # TODO: beaker_fact_matrix input
-    name: "${{ matrix.puppet.value }} - ${{ matrix.setfile.name }}"
+    name: "${{ matrix.name }}"
     steps:
       - uses: actions/checkout@v4
       - name: install additional packages

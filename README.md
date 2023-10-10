@@ -35,7 +35,7 @@ group :test do
   # CI will typically set it to '~> 7.0' to get 7.x
   gem 'puppet', ENV.fetch('PUPPET_GEM_VERSION', '>= 0'), require: false
   # Needed to build the test matrix based on metadata
-  gem 'puppet_metadata', '>= 1.10', '< 4', require: false
+  gem 'puppet_metadata', '~> 3.3', require: false
   # Needed for the rake tasks
   gem 'puppetlabs_spec_helper', '>= 2.16.0', '< 7', require: false
   # Rubocop versions are also specific so it's recommended

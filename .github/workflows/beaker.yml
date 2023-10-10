@@ -39,6 +39,11 @@ on:
         default: docker
         required: false
         type: string
+      beaker_facter:
+        description: Expand the Beaker matrix based on a fact
+        default: 'false'
+        required: false
+        type: string
       domain:
         description: The domain that will be used for the beaker instances
         default: "example.com"
@@ -91,7 +96,7 @@ jobs:
         if: ${{ inputs.rubocop }}
       - name: Setup Test Matrix
         id: get-outputs
-        run: bundle exec metadata2gha --domain ${{ inputs.domain }} --pidfile-workaround ${{ inputs.pidfile_workaround }}
+        run: bundle exec metadata2gha --domain ${{ inputs.domain }} --pidfile-workaround ${{ inputs.pidfile_workaround }} --beaker-facter "${{ inputs.beaker_facter }}"
 
   unit:
     defaults:

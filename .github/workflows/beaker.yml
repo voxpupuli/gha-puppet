@@ -59,6 +59,11 @@ on:
         default: ubuntu-20.04
         required: false
         type: string
+      hosts:
+        description: A list of hostnames to create -- generates multiple SUTs. Separate values using commas'
+        default: ''
+        required: false
+        type: string
     secrets:
       beaker_hcloud_token:
         description: token to access the Hetzner Cloud API
@@ -102,7 +107,7 @@ jobs:
         if: ${{ inputs.rubocop }}
       - name: Setup Test Matrix
         id: get-outputs
-        run: bundle exec metadata2gha --domain ${{ inputs.domain }} --pidfile-workaround ${{ inputs.pidfile_workaround }} --beaker-facter "${{ inputs.beaker_facter }}"
+        run: bundle exec metadata2gha --domain ${{ inputs.domain }} --pidfile-workaround ${{ inputs.pidfile_workaround }} --beaker-facter "${{ inputs.beaker_facter }}" --hosts "${{ inputs.hosts }}"
 
   unit:
     defaults:

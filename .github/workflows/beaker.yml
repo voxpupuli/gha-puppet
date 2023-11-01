@@ -59,6 +59,10 @@ on:
         default: ubuntu-20.04
         required: false
         type: string
+    secrets:
+      beaker_hcloud_token:
+        description: token to access the Hetzner Cloud API
+        required: false
 
 env:
   BEAKER_HYPERVISOR: ${{ inputs.beaker_hypervisor }}
@@ -136,6 +140,7 @@ jobs:
     runs-on: ${{ inputs.acceptance_runs_on }}
     env:
       BUNDLE_WITHOUT: development:test:release
+      BEAKER_HCLOUD_TOKEN: '${{ secrets.beaker_hcloud_token }}'
     strategy:
       fail-fast: false
       matrix:

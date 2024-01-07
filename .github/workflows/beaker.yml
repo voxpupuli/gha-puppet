@@ -167,6 +167,11 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y ${{ inputs.additional_packages }}
+      - name: Setup podman
+        if: ${{ inputs.beaker_hypervisor == 'container_podman' }}
+        run: |
+          systemctl start --user podman.socket
+          echo "DOCKER_HOST=unix:///run/user/$(id -u)/podman/podman.sock" >> "$GITHUB_ENV"
       - name: Setup libvirt for Vagrant
         if: ${{ inputs.beaker_hypervisor == 'vagrant_libvirt' && inputs.install_vagrant_dependencies == true }}
         run: |

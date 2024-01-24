@@ -85,7 +85,9 @@ jobs:
       - uses: actions/checkout@v4
       - name: install additional packages
         if: ${{ inputs.additional_packages != '' }}
-        run: sudo apt-get install -y ${{ inputs.additional_packages }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ${{ inputs.additional_packages }}
       - name: Setup ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -121,7 +123,9 @@ jobs:
       - uses: actions/checkout@v4
       - name: install additional packages
         if: ${{ inputs.additional_packages != '' }}
-        run: sudo apt-get install -y ${{ inputs.additional_packages }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ${{ inputs.additional_packages }}
       - name: Setup ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -150,10 +154,13 @@ jobs:
       - uses: actions/checkout@v4
       - name: install additional packages
         if: ${{ inputs.additional_packages != '' }}
-        run: sudo apt-get install -y ${{ inputs.additional_packages }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ${{ inputs.additional_packages }}
       - name: Setup libvirt for Vagrant
         if: ${{ inputs.beaker_hypervisor == 'vagrant_libvirt' }}
         run: |
+          sudo apt-get update
           sudo apt-get install -y --no-install-recommends vagrant vagrant-libvirt libvirt-clients libvirt-daemon-system libvirt-daemon qemu qemu-system-x86 qemu-utils
           sudo chmod 666 /var/run/libvirt/libvirt-sock
       - name: Setup ruby

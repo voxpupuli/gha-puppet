@@ -55,7 +55,7 @@ on:
         required: false
         type: string
       acceptance_runs_on:
-        description: the runner group used for acceptance jobs run on
+        description: the runner group used for acceptance jobs run on, docker_podman hypervisor requires ubuntu-22.04
         default: ubuntu-20.04
         required: false
         type: string
@@ -152,6 +152,15 @@ jobs:
     name: "${{ matrix.name }}"
     steps:
       - uses: actions/checkout@v4
+      - name: Setup podman
+        if: ${{ inputs.beaker_hypervisor == 'docker_podman' }}
+        run: |
+          # podman in 22.04 is old and buggy, lets pull something fresh
+          echo 'deb http://archive.ubuntu.com/ubuntu/ noble main universe' | sudo tee -a /etc/apt/sources.list
+          sudo apt-get update
+          sudo apt-get install -y podman crun
+          systemctl start --user podman.socket
+          echo "DOCKER_HOST=unix:///run/user/$(id -u)/podman/podman.sock" >> "$GITHUB_ENV"
       - name: install additional packages
         if: ${{ inputs.additional_packages != '' }}
         run: |

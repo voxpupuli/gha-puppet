@@ -31,7 +31,7 @@ on:
         type: string
       unit_runs_on:
         description: the runner group used for unit jobs run on
-        default: ubuntu-latest
+        default: ubuntu-22.04
         required: false
         type: string
 
@@ -41,7 +41,7 @@ jobs:
       run:
         working-directory: ${{ inputs.working-directory }}
     name: Static validations
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: ${{ inputs.timeout_minutes }}
     outputs:
       puppet_unit_test_matrix: ${{ steps.get-outputs.outputs.puppet_unit_test_matrix }}
@@ -102,7 +102,7 @@ jobs:
 
   tests:
     needs: unit
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     name: Test suite
     steps:
       - run: echo Test suite completed

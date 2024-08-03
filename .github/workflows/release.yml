@@ -31,7 +31,7 @@ jobs:
       run:
         working-directory: ${{ inputs.working-directory }}
     name: 'Puppet Forge'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: github.repository_owner == inputs.allowed_owner
     steps:
       - name: Checkout repository

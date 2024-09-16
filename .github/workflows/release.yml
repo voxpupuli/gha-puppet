@@ -48,5 +48,4 @@ jobs:
           #  https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets
           BLACKSMITH_FORGE_USERNAME: '${{ secrets.username }}'
           BLACKSMITH_FORGE_API_KEY: '${{ secrets.api_key }}'
-          PUPPET_GEM_VERSION: "~> 7.0"
         run: bundle exec rake module:push

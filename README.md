@@ -12,10 +12,10 @@ They are heavily focused on the workflow that Vox Pupuli uses, which rely on rak
 
 For more information, see [GitHub's workflow reuse documentation](https://docs.github.com/en/actions/learn-github-actions/reusing-workflows).
 
-Vox Pupuli uses these workflows to test modules. You can reuse them for your own
-modules (as documented in the next section). But they can also be configured to
-test modules that are vendored in a controlrepository or a monorepository. See
-[Working with a subdirectory](#Working-with-a-subdirectory) for details.
+Vox Pupuli uses these workflows to test modules.
+You can reuse them for your own modules (as documented in the next section).
+But they can also be configured to test modules that are vendored in a controlrepository or a monorepository.
+See [Working with a subdirectory](#Working-with-a-subdirectory) for details.
 
 ## Gemfile integration examples
 
@@ -90,8 +90,7 @@ end
 
 ## Rakefile integration example
 
-This is the most minimal Rakefile you can have and still use all the shared
-actions.
+This is the most minimal Rakefile you can have and still use all the shared actions.
 
 ```ruby
 begin
@@ -168,7 +167,9 @@ jobs:
 
 ### Install additional packages
 
-The basic and the beaker workflow support the `additional_packages` input string. You can use that to install additional packages. The String is passed to `sudo apt-get install -y`
+The basic and the beaker workflow support the `additional_packages` input string.
+You can use that to install additional packages.
+The String is passed to `sudo apt-get install -y`
 
 ```yaml
 jobs:
@@ -239,9 +240,8 @@ Assume you've a controlrepository or a monorepository:
         └── templates
 ```
 
-You can use our workflow for the vendored module (in this example `profiles`) as
-well. They all support a `working-directory` input that you can set to the
-vendored module:
+You can use our workflow for the vendored module (in this example `profiles`) as well.
+They all support a `working-directory` input that you can set to the vendored module:
 
 ```yaml
 name: CI

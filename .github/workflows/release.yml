@@ -36,6 +36,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -49,3 +51,13 @@ jobs:
           BLACKSMITH_FORGE_USERNAME: '${{ secrets.username }}'
           BLACKSMITH_FORGE_API_KEY: '${{ secrets.api_key }}'
         run: bundle exec rake module:push
+      - name: Create Release Page
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create ${{ github.ref_name }} --generate-notes
+      - name: Attach puppet module to GitHub Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload ${{ github.ref_name }} pkg/puppet-*tar.gz

@@ -20,7 +20,10 @@ on:
         required: false
         default: ''
         type: string
-
+    secrets:
+      github_pat:
+        description: 'The pccibot PAT that will create the PR'
+        required: true
 env:
   BUNDLE_WITHOUT: development:test:system_tests
   BUNDLE_WITH: release
@@ -70,3 +73,5 @@ jobs:
           delete-branch: true
           title: "Release ${{ inputs.version }}"
           labels: skip-changelog
+        env:
+          GITHUB_TOKEN: '${{ secrets.github_pat }}'

@@ -78,5 +78,4 @@ jobs:
           delete-branch: true
           title: "Release ${{ inputs.version }}"
           labels: skip-changelog
-        env:
-          GITHUB_TOKEN: '${{ secrets.github_pat }}'
+          token: '${{ secrets.github_pat }}'

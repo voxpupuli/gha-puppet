@@ -5,6 +5,10 @@ name: Prepare Release
 on:
   workflow_call:
     inputs:
+      allowed_owner:
+        description: 'Only allow this owner'
+        required: true
+        type: string
       version:
         description: 'Module version to be released.'
         required: false
@@ -38,6 +42,7 @@ jobs:
         working-directory: ${{ inputs.working-directory }}
     name: 'Prepare Release'
     runs-on: ubuntu-24.04
+    if: github.repository_owner == inputs.allowed_owner
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -63,7 +68,7 @@ jobs:
       - name: Prepare the release
         env:
           # https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication
-          CHANGELOG_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CHANGELOG_GITHUB_TOKEN: '${{ secrets.github_pat }}'
         run: bundle exec rake release:prepare
       - name: Create pull Request
         uses: peter-evans/create-pull-request@v7

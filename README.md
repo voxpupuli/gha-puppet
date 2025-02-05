@@ -12,10 +12,10 @@ They are heavily focused on the workflow that Vox Pupuli uses, which rely on rak
 
 For more information, see [GitHub's workflow reuse documentation](https://docs.github.com/en/actions/learn-github-actions/reusing-workflows).
 
-Vox Pupuli uses these workflows to test modules. You can reuse them for your own
-modules (as documented in the next section). But they can also be configured to
-test modules that are vendored in a controlrepository or a monorepository. See
-[Working with a subdirectory](#Working-with-a-subdirectory) for details.
+Vox Pupuli uses these workflows to test modules.
+You can reuse them for your own modules (as documented in the next section).
+But they can also be configured to test modules that are vendored in a controlrepository or a monorepository.
+See [Working with a subdirectory](#Working-with-a-subdirectory) for details.
 
 ## Gemfile integration examples
 
@@ -90,8 +90,7 @@ end
 
 ## Rakefile integration example
 
-This is the most minimal Rakefile you can have and still use all the shared
-actions.
+This is the most minimal Rakefile you can have and still use all the shared actions.
 
 ```ruby
 begin
@@ -168,7 +167,9 @@ jobs:
 
 ### Install additional packages
 
-The basic and the beaker workflow support the `additional_packages` input string. You can use that to install additional packages. The String is passed to `sudo apt-get install -y`
+The basic and the beaker workflow support the `additional_packages` input string.
+You can use that to install additional packages.
+The String is passed to `sudo apt-get install -y`
 
 ```yaml
 jobs:
@@ -178,10 +179,42 @@ jobs:
     with:
       additional_packages: 'libaugeas-dev augeas-tools'
 ```
+## Calling the release prepare workflow
+
+We've one workflow that can create a release PR, `prepare_release.yml`.
+
+It relies on [puppet-blacksmith](https://github.com/voxpupuli/puppet-blacksmith) and [voxpupuli-release](https://github.com/voxpupuli/voxpupuli-release/?tab=readme-ov-file#vox-pupuli-release-gem).
+
+There are a few inputs:
+* `allowed_owner` - The workflow only runs if the owner matches. This prevents forks from attempting to release.
+* `version` - Optional version that will be used to prepare the release.
+* `working-directory` - The working directory where all jobs should be executed.
+* `base-branch` - The branch that will be used as the origin for the release branch.
+
+When `version` is not provided, the [module:bump](https://github.com/voxpupuli/puppet-blacksmith/blob/b2d6d41e99c9dde2ab049455d25c66d167f0fa1d/lib/puppet_blacksmith/rake_tasks.rb#L83-L88) rake task will be executed.
+This will increase the version in metadata.json to the next patch level.
+
+There is also one secret ([GitHub's secrets documentation](https://docs.github.com/en/actions/security-guides/encrypted-secrets)):
+* `github_pat` - A PAT (personal access token) from a bot account
+
+Every interaction with the GitHub API needs to be authenticated.
+By default, GitHub provides a token to CI jobs.
+Those tokens cannot trigger another CI run.
+This is a feature to prevent loops.
+Since our goal is to create a "release PR", and we want to run the CI jobs for this PR, we need another token.
+To do so, Vox Pupuli has a bot account, [pccibot](https://github.com/pccibot).
+A 'fine grained access token' from such an account needs to be provided to to `github_pat` secret.
+
+The token needs permissions on the correct GitHub namespace, the correct repository and:
+
+* Read and Write access to code and pull requests
+* Read access to metadata
+
+An organisation admin needs to approve the requested token (settings -> Personal access tokens -> Pending requests).
 
 ## Calling the release workflow
 
-The release workflow relies on [puppet-blacksmith](https://github.com/voxpupuli/puppet-blacksmith) and in particular the `module:push` rake task.
+The release workflow relies on [puppet-blacksmith](https://github.com/voxpupuli/puppet-blacksmith) and in particular the `module:push` rake task. It also uses the [gh cli](https://cli.github.com/).
 
 There is one input:
 * `allowed_owner` - The workflow only runs if the owner matches. This prevents forks from attempting to release.
@@ -239,9 +272,8 @@ Assume you've a controlrepository or a monorepository:
         └── templates
 ```
 
-You can use our workflow for the vendored module (in this example `profiles`) as
-well. They all support a `working-directory` input that you can set to the
-vendored module:
+You can use our workflow for the vendored module (in this example `profiles`) as well.
+They all support a `working-directory` input that you can set to the vendored module:
 
 ```yaml
 name: CI

@@ -79,6 +79,7 @@ jobs:
           title: "Release ${{ inputs.version }}"
           labels: skip-changelog
           token: '${{ secrets.github_pat }}'
+          assignees: '${{ github.triggering_actor }}'
           body: |
             Automated release-prep through https://github.com/voxpupuli/gha-puppet/ from commit ${{ github.sha }}.
             Checkout the [module release instructions](https://voxpupuli.org/docs/releasing_version/).

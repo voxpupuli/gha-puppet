@@ -1,0 +1,6 @@
+---
+rules:
+  indentation:
+    spaces: 2
+  line-length:
+    max: 250

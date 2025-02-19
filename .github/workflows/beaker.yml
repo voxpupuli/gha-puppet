@@ -162,6 +162,11 @@ jobs:
     name: "${{ matrix.name }}"
     steps:
       - uses: actions/checkout@v4
+      - name: disable apparmor
+        run: |
+          # https://bugs.launchpad.net/ubuntu/+source/apparmor/+bug/2093797
+          sudo aa-teardown || true
+          sudo systemctl disable --now apparmor.service
       - name: install additional packages
         if: ${{ inputs.additional_packages != '' }}
         run: |

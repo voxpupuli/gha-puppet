@@ -1,46 +1,46 @@
 ---
-
 name: Prepare Release
 
 on:
   workflow_call:
     inputs:
       allowed_owner:
-        description: 'Only allow this owner'
+        description: Only allow this owner
         required: true
         type: string
       version:
-        description: 'Module version to be released.'
+        description: Module version to be released.
         required: false
         default: ''
         type: string
       working-directory:
-        description: The working directory where all jobs should be executed. Used for modules in subdirectories like a monorepo or a control repository.
-        default: '.'
+        description: The working directory where all jobs should be executed. Used
+          for modules in subdirectories like a monorepo or a control repository.
+        default: .
         required: false
         type: string
       base-branch:
-        description: 'The branch that will be used as the origin for the release branch.'
+        description: The branch that will be used as the origin for the release branch.
         required: false
         default: ''
         type: string
     secrets:
       github_pat:
-        description: 'The pccibot PAT that will create the PR'
+        description: The pccibot PAT that will create the PR
         required: true
 env:
   BUNDLE_WITHOUT: development:test:system_tests
   BUNDLE_WITH: release
   GIT_AUTHOR_NAME: Release Automation
-  GIT_AUTHOR_EMAIL: "${{ github.repository_owner }}@users.noreply.github.com"
-  BLACKSMITH_FULL_VERSION: "${{ inputs.version }}"
+  GIT_AUTHOR_EMAIL: ${{ github.repository_owner }}@users.noreply.github.com
+  BLACKSMITH_FULL_VERSION: ${{ inputs.version }}
 
 jobs:
   prepare_release:
     defaults:
       run:
         working-directory: ${{ inputs.working-directory }}
-    name: 'Prepare Release'
+    name: Prepare Release
     runs-on: ubuntu-24.04
     if: github.repository_owner == inputs.allowed_owner
     steps:
@@ -68,18 +68,18 @@ jobs:
       - name: Prepare the release
         env:
           # https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication
-          CHANGELOG_GITHUB_TOKEN: '${{ secrets.github_pat }}'
+          CHANGELOG_GITHUB_TOKEN: ${{ secrets.github_pat }}
         run: bundle exec rake release:prepare
       - name: Create pull Request
         uses: peter-evans/create-pull-request@v7
         with:
-          commit-message: "Release ${{ inputs.version }}"
+          commit-message: Release ${{ inputs.version }}
           branch: release-prep
           delete-branch: true
-          title: "Release ${{ inputs.version }}"
+          title: Release ${{ inputs.version }}
           labels: skip-changelog
-          token: '${{ secrets.github_pat }}'
-          assignees: '${{ github.triggering_actor }}'
-          body: |
+          token: ${{ secrets.github_pat }}
+          assignees: ${{ github.triggering_actor }}
+          body: |-
             Automated release-prep through https://github.com/voxpupuli/gha-puppet/ from commit ${{ github.sha }}.
-            Checkout the [module release instructions](https://voxpupuli.org/docs/releasing_version/).
+            Check out the [module release instructions](https://voxpupuli.org/docs/releasing_version/).

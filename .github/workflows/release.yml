@@ -1,25 +1,25 @@
 ---
-
 name: Release
 
 on:
   workflow_call:
     inputs:
       allowed_owner:
-        description: 'Only allow this owner'
+        description: Only allow this owner
         required: true
         type: string
       working-directory:
-        description: The working directory where all jobs should be executed. Used for modules in subdirectories like a monorepo or a control repository.
-        default: '.'
+        description: The working directory where all jobs should be executed. Used
+          for modules in subdirectories like a monorepo or a control repository.
+        default: .
         required: false
         type: string
     secrets:
       username:
-        description: 'The forge username to use'
+        description: The forge username to use
         required: true
       api_key:
-        description: 'The forge API key'
+        description: The forge API key
         required: true
 
 env:
@@ -30,7 +30,7 @@ jobs:
     defaults:
       run:
         working-directory: ${{ inputs.working-directory }}
-    name: 'Puppet Forge'
+    name: Puppet Forge
     runs-on: ubuntu-24.04
     if: github.repository_owner == inputs.allowed_owner
     steps:
@@ -48,8 +48,8 @@ jobs:
         env:
           # Configure secrets here:
           #  https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets
-          BLACKSMITH_FORGE_USERNAME: '${{ secrets.username }}'
-          BLACKSMITH_FORGE_API_KEY: '${{ secrets.api_key }}'
+          BLACKSMITH_FORGE_USERNAME: ${{ secrets.username }}
+          BLACKSMITH_FORGE_API_KEY: ${{ secrets.api_key }}
         run: bundle exec rake module:push
       - name: Create Release Page
         shell: bash

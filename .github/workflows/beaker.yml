@@ -5,7 +5,8 @@ on:
   workflow_call:
     inputs:
       pidfile_workaround:
-        description: How to apply the systemd PIDFile workaround for acceptance tests, if at all
+        description: How to apply the systemd PIDFile workaround for acceptance tests,
+          if at all
         default: 'false'
         required: false
         type: string
@@ -20,8 +21,9 @@ on:
         required: false
         type: number
       working-directory:
-        description: The working directory where all jobs should be executed. Used for modules in subdirectories like a monorepo or a control repository.
-        default: '.'
+        description: The working directory where all jobs should be executed. Used
+          for modules in subdirectories like a monorepo or a control repository.
+        default: .
         required: false
         type: string
       cache-version:
@@ -40,7 +42,8 @@ on:
         required: false
         type: string
       install_vagrant_dependencies:
-        description: When true and beaker_hypervisor==vagrant_libvirt, we will install vagrant + libvirt
+        description: When true and beaker_hypervisor==vagrant_libvirt, we will install
+          vagrant + libvirt
         default: true
         required: false
         type: boolean
@@ -56,7 +59,7 @@ on:
         type: string
       domain:
         description: The domain that will be used for the beaker instances
-        default: "example.com"
+        default: example.com
         required: false
         type: string
       unit_runs_on:
@@ -90,7 +93,7 @@ jobs:
       puppet_beaker_test_matrix: ${{ steps.get-outputs.outputs.puppet_beaker_test_matrix }}
     env:
       BUNDLE_WITHOUT: development:system_tests:release
-      PUPPET_GEM_VERSION: ">= 7.0"
+      PUPPET_GEM_VERSION: '>= 7.0'
     steps:
       - uses: actions/checkout@v4
       - name: install additional packages
@@ -112,8 +115,9 @@ jobs:
         if: ${{ inputs.rubocop }}
       - name: Setup Test Matrix
         id: get-outputs
-        run: bundle exec metadata2gha --domain ${{ inputs.domain }} --pidfile-workaround ${{ inputs.pidfile_workaround }} --beaker-facter "${{ inputs.beaker_facter }}" --beaker-hosts "${{ inputs.beaker_hosts }}"
-
+        run: bundle exec metadata2gha --domain ${{ inputs.domain }} --pidfile-workaround
+          ${{ inputs.pidfile_workaround }} --beaker-facter "${{ inputs.beaker_facter }}"
+          --beaker-hosts "${{ inputs.beaker_hosts }}"
   unit:
     defaults:
       run:
@@ -127,7 +131,7 @@ jobs:
         include: ${{fromJson(needs.setup_matrix.outputs.puppet_unit_test_matrix)}}
     env:
       BUNDLE_WITHOUT: development:system_tests:release
-      PUPPET_GEM_VERSION: "~> ${{ matrix.puppet }}.0"
+      PUPPET_GEM_VERSION: '~> ${{ matrix.puppet }}.0'
     name: ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }})
     steps:
       - uses: actions/checkout@v4
@@ -145,7 +149,6 @@ jobs:
           working-directory: ${{ inputs.working-directory }}
       - name: Run tests
         run: bundle exec rake parallel_spec
-
   acceptance:
     defaults:
       run:
@@ -154,12 +157,12 @@ jobs:
     runs-on: ${{ inputs.acceptance_runs_on }}
     env:
       BUNDLE_WITHOUT: development:test:release
-      BEAKER_HCLOUD_TOKEN: '${{ secrets.beaker_hcloud_token }}'
+      BEAKER_HCLOUD_TOKEN: ${{ secrets.beaker_hcloud_token }}
     strategy:
       fail-fast: false
       matrix:
         include: ${{fromJson(needs.setup_matrix.outputs.puppet_beaker_test_matrix)}}
-    name: "${{ matrix.name }}"
+    name: ${{ matrix.name }}
     steps:
       - uses: actions/checkout@v4
       - name: install additional packages

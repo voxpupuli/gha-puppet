@@ -73,6 +73,12 @@ on:
       beaker_hcloud_token:
         description: token to access the Hetzner Cloud API
         required: false
+      icinga_repo_password:
+        description: password to access upstream Icinga repos
+        required: false
+      icinga_repo_user:
+        description: user to access upstream Icinga repos
+        required: false
 
 env:
   BEAKER_HYPERVISOR: ${{ inputs.beaker_hypervisor }}
@@ -155,6 +161,8 @@ jobs:
     env:
       BUNDLE_WITHOUT: development:test:release
       BEAKER_HCLOUD_TOKEN: '${{ secrets.beaker_hcloud_token }}'
+      ICINGA_REPO_PASSWORD: '${{ secrets.icinga_repo_password }}'
+      ICINGA_REPO_USER: '${{ secrets.icinga_repo_user }}'
     strategy:
       fail-fast: false
       matrix:

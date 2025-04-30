@@ -60,4 +60,4 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload ${{ github.ref_name }} pkg/puppet-*tar.gz
+        run: gh release upload ${{ github.ref_name }} pkg/*.tar.gz

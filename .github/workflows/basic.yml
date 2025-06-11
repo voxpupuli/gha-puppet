@@ -49,6 +49,7 @@ jobs:
     env:
       BUNDLE_WITHOUT: development:system_tests:release
       PUPPET_GEM_VERSION: ">= 7.0"
+      OPENVOX_GEM_VERSION: ">= 7.0"
     steps:
       - uses: actions/checkout@v4
       - name: install additional packages
@@ -86,6 +87,7 @@ jobs:
     env:
       BUNDLE_WITHOUT: development:system_tests:release
       PUPPET_GEM_VERSION: "~> ${{ matrix.puppet }}.0"
+      OPENVOX_GEM_VERSION: "~> ${{ matrix.puppet }}.0"
     name: ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }})
     steps:
       - uses: actions/checkout@v4

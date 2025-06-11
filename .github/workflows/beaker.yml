@@ -105,6 +105,8 @@ jobs:
           bundler-cache: true
           cache-version: ${{ inputs.cache-version }}
           working-directory: ${{ inputs.working-directory }}
+      - name: Display Ruby environment
+        run: bundle env
       - name: Run static validations
         run: bundle exec rake validate lint check
       - name: Run rake rubocop
@@ -143,6 +145,8 @@ jobs:
           bundler-cache: true
           cache-version: ${{ inputs.cache-version }}
           working-directory: ${{ inputs.working-directory }}
+      - name: Display Ruby environment
+        run: bundle env
       - name: Run tests
         run: bundle exec rake parallel_spec
 
@@ -192,6 +196,8 @@ jobs:
           cache-version: ${{ inputs.cache-version }}
           working-directory: ${{ inputs.working-directory }}
           self-hosted: ${{ ! startsWith(inputs.acceptance_runs_on, 'ubuntu-') }}
+      - name: Display Ruby environment
+        run: bundle env
       - name: Run tests
         run: bundle exec rake beaker
         env: ${{ matrix.env }}

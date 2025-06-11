@@ -54,10 +54,8 @@ jobs:
           ruby-version: '3.3'
           bundler-cache: true
           working-directory: ${{ inputs.working-directory }}
-      - name: bundle environment
-        run: |
-          bundle env
-          bundle list
+      - name: Display Ruby environment
+        run: bundle env
       - name: Update metadata.json to new version
         run: |
           if [[ -n BLACKSMITH_FULL_VERSION ]] ; then

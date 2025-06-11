@@ -44,6 +44,8 @@ jobs:
           ruby-version: '3.2'
           bundler-cache: true
           working-directory: ${{ inputs.working-directory }}
+      - name: Display Ruby environment
+        run: bundle env
       - name: Build and Release
         env:
           # Configure secrets here:

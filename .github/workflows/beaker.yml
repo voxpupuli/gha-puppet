@@ -69,6 +69,11 @@ on:
         default: ubuntu-24.04
         required: false
         type: string
+      github_token_exposed:
+        description: expose github token in a GITHUB_TOKEN environment variable
+        default: false
+        required: false
+        type: boolean
     secrets:
       beaker_hcloud_token:
         description: token to access the Hetzner Cloud API
@@ -200,6 +205,9 @@ jobs:
           self-hosted: ${{ ! startsWith(inputs.acceptance_runs_on, 'ubuntu-') }}
       - name: Display Ruby environment
         run: bundle env
+      - name: Expose github token to Beaker
+        if: ${{ inputs.github_token_exposed == true }}
+        run: echo "GITHUB_TOKEN=${{ github.token }}" >> "$GITHUB_ENV"
       - name: Run tests
         run: bundle exec rake beaker
         env: ${{ matrix.env }}

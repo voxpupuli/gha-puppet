@@ -1,5 +1,5 @@
 ---
-name: Puppet
+name: Unit
 
 on:
   workflow_call:
@@ -88,7 +88,7 @@ jobs:
       BUNDLE_WITHOUT: development:system_tests:release
       PUPPET_GEM_VERSION: "~> ${{ matrix.puppet }}.0"
       OPENVOX_GEM_VERSION: "~> ${{ matrix.puppet }}.0"
-    name: ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }})
+    name: OpenVox ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }})
     steps:
       - uses: actions/checkout@v4
       - name: install additional packages

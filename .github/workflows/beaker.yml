@@ -93,7 +93,7 @@ jobs:
       PUPPET_GEM_VERSION: ">= 7.0"
       OPENVOX_GEM_VERSION: ">= 7.0"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: install additional packages
         if: ${{ inputs.additional_packages != '' }}
         run: |
@@ -134,7 +134,7 @@ jobs:
       OPENVOX_GEM_VERSION: "~> ${{ matrix.puppet }}.0"
     name: ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }})
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: install additional packages
         if: ${{ inputs.additional_packages != '' }}
         run: |
@@ -167,7 +167,7 @@ jobs:
         include: ${{fromJson(needs.setup_matrix.outputs.puppet_beaker_test_matrix)}}
     name: "${{ matrix.name }}"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: disable apparmor
         run: |
           # https://bugs.launchpad.net/ubuntu/+source/apparmor/+bug/2093797

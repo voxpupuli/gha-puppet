@@ -69,6 +69,11 @@ on:
         default: ubuntu-24.04
         required: false
         type: string
+      unit_tests_rake_task:
+        description: The rake task that will be executed to run run rspec-puppet
+        default: parallel_spec
+        required: false
+        type: string
     secrets:
       beaker_hcloud_token:
         description: token to access the Hetzner Cloud API
@@ -150,7 +155,7 @@ jobs:
       - name: Display Ruby environment
         run: bundle env
       - name: Run tests
-        run: bundle exec rake parallel_spec
+        run: bundle exec rake ${{ inputs.unit_tests_rake_task }}
 
   acceptance:
     defaults:

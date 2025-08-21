@@ -34,6 +34,11 @@ on:
         default: ubuntu-24.04
         required: false
         type: string
+      unit_tests_rake_task:
+        description: The rake task that will be executed to run run rspec-puppet
+        default: parallel_spec
+        required: false
+        type: string
 
 jobs:
   setup_matrix:
@@ -104,7 +109,7 @@ jobs:
       - name: Display Ruby environment
         run: bundle env
       - name: Run tests
-        run: bundle exec rake parallel_spec
+        run: bundle exec rake ${{ inputs.unit_tests_rake_task }}
 
   tests:
     if: always()

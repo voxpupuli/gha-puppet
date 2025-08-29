@@ -29,10 +29,18 @@ on:
         required: false
         default: ''
         type: string
+      github_app_id:
+        description: 'GitHub App ID that will be used to create the PR'
+        required: false
+        default: ''
+        type: string
     secrets:
       github_pat:
         description: 'PAT or GitHub App token that will be used to create the PR'
-        required: true
+        required: false
+      github_app_key:
+        description: 'GitHub App private key that will be used to create the PR'
+        required: false
 env:
   BUNDLE_WITHOUT: development:test:system_tests
   BUNDLE_WITH: release
@@ -49,6 +57,27 @@ jobs:
     runs-on: ubuntu-24.04
     if: github.repository_owner == inputs.allowed_owner
     steps:
+      - name: Validate input
+        run: |
+          if [[ -z "${{ secrets.github_pat }}" && -z "${{ secrets.github_app_key }}" ]]; then
+            echo "Error: either PAT or GitHub App credentials are required"
+            exit 1
+          fi
+          if [[ -n "${{ secrets.github_pat }}" && -n "${{ secrets.github_app_key }}" ]]; then
+            echo "Error: use either PAT or GitHub App credentials"
+            exit 1
+          fi
+          if [[ -n "${{ inputs.github_app_id }}" && -z "${{ secrets.github_app_key }}" ]]; then
+            echo "Error: github_app_key secret is required when using github_app_id"
+            exit 1
+          fi
+      - name: Generate GitHub App Token
+        if: inputs.github_app_id != ''
+        id: generate-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ inputs.github_app_id }}
+          private-key: ${{ secrets.github_app_key }}
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -69,11 +98,19 @@ jobs:
             bundle exec rake module:bump
           fi
       - name: Prepare the release
+        if: inputs.github_app_id == ''
         env:
           # https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication
           CHANGELOG_GITHUB_TOKEN: '${{ secrets.github_pat }}'
         run: bundle exec rake release:prepare
+      - name: Prepare the release
+        if: inputs.github_app_id != ''
+        env:
+          # https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication
+          CHANGELOG_GITHUB_TOKEN: '${{ steps.generate-token.outputs.token }}'
+        run: bundle exec rake release:prepare
       - name: Create pull Request
+        if: inputs.github_app_id == ''
         uses: peter-evans/create-pull-request@v7
         with:
           commit-message: "Release ${{ inputs.version }}"
@@ -83,6 +120,21 @@ jobs:
           title: "Release ${{ inputs.version }}"
           labels: skip-changelog
           token: '${{ secrets.github_pat }}'
+          assignees: '${{ github.triggering_actor }}'
+          body: |
+            Automated release-prep through https://github.com/voxpupuli/gha-puppet/ from commit ${{ github.sha }}.
+            Checkout the [module release instructions](https://voxpupuli.org/docs/releasing_version/).
+      - name: Create pull Request
+        if: inputs.github_app_id != ''
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "Release ${{ inputs.version }}"
+          branch: release-prep
+          delete-branch: true
+          sign-commits: ${{ inputs.sign-commits }}
+          title: "Release ${{ inputs.version }}"
+          labels: skip-changelog
+          token: '${{ steps.generate-token.outputs.token }}'
           assignees: '${{ github.triggering_actor }}'
           body: |
             Automated release-prep through https://github.com/voxpupuli/gha-puppet/ from commit ${{ github.sha }}.

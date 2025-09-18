@@ -164,6 +164,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: disable apparmor
+        if: runner.os == 'Linux'
         run: |
           # https://bugs.launchpad.net/ubuntu/+source/apparmor/+bug/2093797
           sudo aa-teardown || true
@@ -192,7 +193,7 @@ jobs:
           bundler-cache: true
           cache-version: ${{ inputs.cache-version }}
           working-directory: ${{ inputs.working-directory }}
-          self-hosted: ${{ ! startsWith(inputs.acceptance_runs_on, 'ubuntu-') }}
+          self-hosted: ${{ ! startsWith(inputs.acceptance_runs_on, 'ubuntu-') }} && ${{ ! startsWith(inputs.acceptance_runs_on, 'windows-') }}
       - name: Display Ruby environment
         run: bundle env
       - name: Run tests

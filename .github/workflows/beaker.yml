@@ -204,6 +204,15 @@ jobs:
         run: bundle exec rake beaker
         env: ${{ matrix.env }}
 
+  debug:
+    runs-on: ubuntu-24.04
+    name: debug secrets
+    env:
+      foo: ${{ secrets.debugsecret }}
+    steps:
+      - name: output environment
+        run: env
+
   tests:
     if: always()
     needs:

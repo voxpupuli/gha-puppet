@@ -36,7 +36,7 @@ on:
         type: string
       beaker_hypervisor:
         description: The hypervisor beaker will use to start containers/VMs
-        default: docker
+        default: container_podman
         required: false
         type: string
       install_vagrant_dependencies:

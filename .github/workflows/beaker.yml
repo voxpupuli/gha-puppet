@@ -4,11 +4,6 @@ name: Puppet
 on:
   workflow_call:
     inputs:
-      pidfile_workaround:
-        description: How to apply the systemd PIDFile workaround for acceptance tests, if at all
-        default: 'false'
-        required: false
-        type: string
       rubocop:
         description: Whether to run Rubocop
         default: true
@@ -115,7 +110,7 @@ jobs:
         if: ${{ inputs.rubocop }}
       - name: Setup Test Matrix
         id: get-outputs
-        run: bundle exec metadata2gha --domain ${{ inputs.domain }} --pidfile-workaround ${{ inputs.pidfile_workaround }} --beaker-facter "${{ inputs.beaker_facter }}" --beaker-hosts "${{ inputs.beaker_hosts }}"
+        run: bundle exec metadata2gha --domain ${{ inputs.domain }} --beaker-facter "${{ inputs.beaker_facter }}" --beaker-hosts "${{ inputs.beaker_hosts }}"
 
   unit:
     defaults:

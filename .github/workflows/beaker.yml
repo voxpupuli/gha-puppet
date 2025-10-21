@@ -34,6 +34,11 @@ on:
         default: container_podman
         required: false
         type: string
+      podman_rootful:
+        description: If true use the rootful podman socket.
+        default: false
+        required: false
+        type: boolean
       install_vagrant_dependencies:
         description: When true and beaker_hypervisor==vagrant_libvirt, we will install vagrant + libvirt
         default: true
@@ -178,6 +183,12 @@ jobs:
         run: |
           systemctl start --user podman.socket
           echo "DOCKER_HOST=unix:///run/user/$(id -u)/podman/podman.sock" >> "$GITHUB_ENV"
+      - if: ${{ inputs.podman_rootful }}
+        run: |
+          sudo systemctl start podman.socket
+          sudo chmod 0777 /run/podman
+          sudo chmod 0666 /run/podman/podman.sock
+          echo "DOCKER_HOST=unix:///run/podman/podman.sock" >> "$GITHUB_ENV"
       - name: Setup libvirt for Vagrant
         if: ${{ inputs.beaker_hypervisor == 'vagrant_libvirt' && inputs.install_vagrant_dependencies == true }}
         run: |

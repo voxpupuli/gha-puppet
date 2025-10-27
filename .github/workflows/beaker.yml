@@ -204,6 +204,11 @@ jobs:
           cache-version: ${{ inputs.cache-version }}
           working-directory: ${{ inputs.working-directory }}
           self-hosted: ${{ ! startsWith(inputs.acceptance_runs_on, 'ubuntu-') }}
+      - name: Debug with tmate (pre-hang)
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true
+        timeout-minutes: 1200 
       - name: Display Ruby environment
         run: bundle env
       - name: Run tests

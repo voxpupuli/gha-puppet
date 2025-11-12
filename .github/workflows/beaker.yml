@@ -189,6 +189,7 @@ jobs:
           sudo chmod 0777 /run/podman
           sudo chmod 0666 /run/podman/podman.sock
           echo "DOCKER_HOST=unix:///run/podman/podman.sock" >> "$GITHUB_ENV"
+          echo "CONTAINER_HOST=unix:///run/podman/podman.sock" >> "$GITHUB_ENV"
       - name: Setup libvirt for Vagrant
         if: ${{ inputs.beaker_hypervisor == 'vagrant_libvirt' && inputs.install_vagrant_dependencies == true }}
         run: |

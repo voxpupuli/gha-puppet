@@ -45,7 +45,7 @@ jobs:
     if: github.repository_owner == inputs.allowed_owner
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ inputs.base-branch }}
       - name: Setup Ruby

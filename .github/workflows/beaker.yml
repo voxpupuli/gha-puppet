@@ -195,7 +195,6 @@ jobs:
         run: bundle env
       - name: Run tests
         run: bundle exec rake beaker
-        env: ${{ matrix.env }}
 
   tests:
     if: always()

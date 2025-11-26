@@ -156,7 +156,7 @@ jobs:
     env:
       BUNDLE_WITHOUT: development:test:release
       BEAKER_HCLOUD_TOKEN: '${{ secrets.beaker_hcloud_token }}'
-      BEAKER_SETFILE: "windows2025-64{ip=127.0.0.1,hostname=localhost,hypervisor=none}"
+      BEAKER_SETFILE: "windows2025-64{ip=127.0.0.1,hostname=localhost,hypervisor=none,is_cygwin=false}"
     name: "${{ matrix.name }}"
     steps:
       - uses: actions/checkout@v6

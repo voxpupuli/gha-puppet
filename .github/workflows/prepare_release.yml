@@ -69,7 +69,7 @@ jobs:
           CHANGELOG_GITHUB_TOKEN: '${{ secrets.github_pat }}'
         run: bundle exec rake release:prepare
       - name: Create pull Request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           commit-message: "Release ${{ inputs.version }}"
           branch: release-prep

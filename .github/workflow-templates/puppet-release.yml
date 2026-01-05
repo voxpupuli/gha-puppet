@@ -1,0 +1,23 @@
+---
+name: Puppet Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  release:
+    name: Release
+    uses: voxpupuli/gha-puppet/.github/workflows/release.yml@v4
+    with:
+      # Set this to your GitHub org/user to prevent forks from releasing.
+      allowed_owner: 'REPLACE_ME'
+      working-directory: '.'
+    secrets:
+      username: ${{ secrets.PUPPET_FORGE_USERNAME }}
+      api_key: ${{ secrets.PUPPET_FORGE_API_KEY }}

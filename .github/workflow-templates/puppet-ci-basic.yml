@@ -1,0 +1,23 @@
+---
+name: Puppet CI (basic)
+
+on:
+  push:
+    branches: [$default-branch]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  puppet:
+    name: Puppet
+    uses: voxpupuli/gha-puppet/.github/workflows/basic.yml@v4
+    with:
+      # Set to false if your module doesn't use Rubocop.
+      rubocop: true
+      # Use this for monorepos/control repos.
+      working-directory: '.'
+      # Install additional apt packages if required (space-separated).
+      additional_packages: ''

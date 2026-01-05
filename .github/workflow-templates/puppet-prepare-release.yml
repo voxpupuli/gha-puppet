@@ -1,0 +1,28 @@
+---
+name: Prepare Puppet Release PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Optional version (e.g. 1.2.3). Empty => bump."
+        required: false
+        default: ""
+      base-branch:
+        description: "Base branch for the release PR."
+        required: false
+        default: "$default-branch"
+
+jobs:
+  prepare:
+    name: Prepare release
+    uses: voxpupuli/gha-puppet/.github/workflows/prepare_release.yml@v4
+    with:
+      # Set this to your GitHub org/user to prevent forks from running.
+      allowed_owner: 'REPLACE_ME'
+      version: ${{ inputs.version }}
+      base-branch: ${{ inputs.base-branch }}
+      working-directory: '.'
+    secrets:
+      # Fine-grained PAT from a bot account; see gha-puppet README.
+      github_pat: ${{ secrets.GITHUB_PAT }}

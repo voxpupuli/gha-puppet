@@ -1,0 +1,22 @@
+---
+name: Puppet CI (with Beaker)
+
+on:
+  push:
+    branches: [$default-branch]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  puppet:
+    name: Puppet
+    uses: voxpupuli/gha-puppet/.github/workflows/beaker.yml@v4
+    with:
+      rubocop: true
+      working-directory: '.'
+      additional_packages: ''
+      # Default is container_podman; change to vagrant_libvirt if needed.
+      beaker_hypervisor: 'container_podman'

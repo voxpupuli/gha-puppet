@@ -1,0 +1,12 @@
+{
+  "name": "Puppet CI (with Beaker)",
+  "description": "Run Puppet module tests including Beaker acceptance using voxpupuli/gha-puppet.",
+  "iconName": "octicon beaker",
+  "categories": ["Ruby"],
+  "filePatterns": [
+    "^metadata\\.json$",
+    "^Puppetfile$",
+    "^Gemfile$",
+    "^Rakefile$"
+  ]
+}

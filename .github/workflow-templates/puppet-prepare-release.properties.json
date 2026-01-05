@@ -1,0 +1,11 @@
+{
+  "name": "Prepare Puppet Release PR",
+  "description": "Create a release-prep pull request using voxpupuli/gha-puppet.",
+  "iconName": "octicon git-pull-request",
+  "categories": ["Ruby"],
+  "filePatterns": [
+    "^metadata\\.json$",
+    "^Gemfile$",
+    "^Rakefile$"
+  ]
+}

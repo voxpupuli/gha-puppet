@@ -1,0 +1,12 @@
+{
+  "name": "Puppet CI (basic)",
+  "description": "Run Puppet module static validations and unit tests using voxpupuli/gha-puppet.",
+  "iconName": "octicon checklist",
+  "categories": ["Ruby"],
+  "filePatterns": [
+    "^metadata\\.json$",
+    "^Puppetfile$",
+    "^Gemfile$",
+    "^Rakefile$"
+  ]
+}

@@ -15,7 +15,7 @@ For more information, see [GitHub's workflow reuse documentation](https://docs.g
 Vox Pupuli uses these workflows to test modules.
 You can reuse them for your own modules (as documented in the next section).
 But they can also be configured to test modules that are vendored in a controlrepository or a monorepository.
-See [Working with a subdirectory](#Working-with-a-subdirectory) for details.
+See [Working with a subdirectory](#working-with-a-subdirectory) for details.
 
 ## Gemfile integration examples
 
@@ -56,7 +56,9 @@ group :release do
 end
 ```
 
-It is recommended to use [voxpupuli-test](https://github.com/voxpupuli/voxpupuli-test), [voxpupuli-acceptance](https://github.com/voxpupuli/voxpupuli-acceptance), and [voxpupuli-release](https://github.com/voxpupuli/voxpupuli-release) to manage the dependencies.
+It is recommended to use [voxpupuli-test](https://github.com/voxpupuli/voxpupuli-test),
+[voxpupuli-acceptance](https://github.com/voxpupuli/voxpupuli-acceptance), and
+[voxpupuli-release](https://github.com/voxpupuli/voxpupuli-release) to manage the dependencies.
 
 ```ruby
 source 'https://rubygems.org'
@@ -115,6 +117,16 @@ end
 ## Calling test workflows
 
 It is recommended to create a single workflow for all Puppet tests and name it `.github/workflows/puppet.yml`.
+
+### Workflow templates
+
+Starter workflow templates are in [.github/workflow-templates](.github/workflow-templates).
+
+If you are in an organization that maintains an org-level `.github` repository,
+you can copy these files there to make them show up in GitHub's “New workflow” UI
+for all repositories in the org.
+Otherwise, you can copy the contents of the templates
+into your own repository's `.github/workflows/` directory.
 
 ### Basic tests
 
@@ -179,6 +191,7 @@ jobs:
     with:
       additional_packages: 'libaugeas-dev augeas-tools'
 ```
+
 ## Calling the release prepare workflow
 
 We've one workflow that can create a release PR, `prepare_release.yml`.
@@ -186,6 +199,7 @@ We've one workflow that can create a release PR, `prepare_release.yml`.
 It relies on [puppet-blacksmith](https://github.com/voxpupuli/puppet-blacksmith) and [voxpupuli-release](https://github.com/voxpupuli/voxpupuli-release/?tab=readme-ov-file#vox-pupuli-release-gem).
 
 There are a few inputs:
+
 * `allowed_owner` - The workflow only runs if the owner matches. This prevents forks from attempting to release.
 * `version` - Optional version that will be used to prepare the release.
 * `working-directory` - The working directory where all jobs should be executed.
@@ -195,6 +209,7 @@ When `version` is not provided, the [module:bump](https://github.com/voxpupuli/p
 This will increase the version in metadata.json to the next patch level.
 
 There is also one secret ([GitHub's secrets documentation](https://docs.github.com/en/actions/security-guides/encrypted-secrets)):
+
 * `github_pat` - A PAT (personal access token) from a bot account
 
 Every interaction with the GitHub API needs to be authenticated.
@@ -217,9 +232,11 @@ An organisation admin needs to approve the requested token (settings -> Personal
 The release workflow relies on [puppet-blacksmith](https://github.com/voxpupuli/puppet-blacksmith) and in particular the `module:push` rake task. It also uses the [gh cli](https://cli.github.com/).
 
 There is one input:
+
 * `allowed_owner` - The workflow only runs if the owner matches. This prevents forks from attempting to release.
 
 There are multiple secrets ([GitHub's secrets documentation](https://docs.github.com/en/actions/security-guides/encrypted-secrets)):
+
 * `username` - The Puppet Forge username
 * `api_key` - The [Puppet Forge API key](https://forgeapi.puppet.com/#section/Authentication/ApiKeyAuth)
 
@@ -248,7 +265,7 @@ jobs:
 
 Assume you've a controlrepository or a monorepository:
 
-```
+```text
 .
 ├── bin
 │   └── config_script.sh

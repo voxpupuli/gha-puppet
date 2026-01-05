@@ -1,0 +1,11 @@
+{
+  "name": "Puppet Release",
+  "description": "Release a Puppet module: push to Forge and create an immutable GitHub release.",
+  "iconName": "octicon tag",
+  "categories": ["Ruby"],
+  "filePatterns": [
+    "^metadata\\.json$",
+    "^Gemfile$",
+    "^Rakefile$"
+  ]
+}

@@ -210,7 +210,7 @@ This will increase the version in metadata.json to the next patch level.
 
 There is also one secret ([GitHub's secrets documentation](https://docs.github.com/en/actions/security-guides/encrypted-secrets)):
 
-* `github_pat` - A PAT (personal access token) from a bot account
+* `github_pat` - A PAT (personal access token) from a bot account. Defaults to `${{ secrets.PCCI_PAT_RELEASE_PREP }}`
 
 Every interaction with the GitHub API needs to be authenticated.
 By default, GitHub provides a token to CI jobs.

@@ -58,7 +58,7 @@ jobs:
         run: bundle env
       - name: Update metadata.json to new version
         run: |
-          if [[ -n BLACKSMITH_FULL_VERSION ]] ; then
+          if [[ -n $BLACKSMITH_FULL_VERSION ]] ; then
             bundle exec rake module:bump:full
           else
             bundle exec rake module:bump

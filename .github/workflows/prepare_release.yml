@@ -24,13 +24,13 @@ on:
         required: false
         default: ''
         type: string
-      automation_user_name:
-        description: 'git author + committer name'
+      git_name:
+        description: 'name for the git committer and author'
         required: false
         default: 'Release Automation'
         type: string
-      automation_user_email:
-        description: 'git author + committer email'
+      git_email:
+        description: 'email for the git committer and author'
         required: false
         default: "${{ github.repository_owner }}@users.noreply.github.com"
         type: string
@@ -45,10 +45,10 @@ on:
 env:
   BUNDLE_WITHOUT: development:test:system_tests
   BUNDLE_WITH: release
-  GIT_AUTHOR_NAME: ${{ inputs.automation_user_name }}
-  GIT_AUTHOR_EMAIL: ${{ inputs.automation_user_email }}
-  GIT_COMMITTER_NAME: ${{ inputs.automation_user_name }}
-  GIT_COMMITTER_EMAIL: ${{ inputs.automation_user_email }}
+  GIT_AUTHOR_NAME: ${{ inputs.git_name }}
+  GIT_AUTHOR_EMAIL: ${{ inputs.git_email }}
+  GIT_COMMITTER_NAME: ${{ inputs.git_name }}
+  GIT_COMMITTER_EMAIL: ${{ inputs.git_email }}
   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
   BLACKSMITH_FULL_VERSION: "${{ inputs.version }}"
 

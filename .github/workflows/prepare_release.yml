@@ -117,6 +117,8 @@ jobs:
           labels: skip-changelog
           token: '${{ secrets.github_pat }}'
           assignees: '${{ github.triggering_actor }}'
+          author: '${{ env.GIT_AUTHOR_NAME }} <${{ env.GIT_AUTHOR_EMAIL }}>'
+          committer: '${{ env.GIT_COMMITTER_NAME }} <${{ env.GIT_COMMITTER_EMAIL }}>'
           body: |
             Automated release-prep through https://github.com/voxpupuli/gha-puppet/ from commit ${{ github.sha }}.
             Checkout the [module release instructions](https://voxpupuli.org/docs/releasing_version/).

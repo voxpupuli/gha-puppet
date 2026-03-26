@@ -31,10 +31,7 @@ on:
         type: string
     secrets:
       ssh_private_key:
-        description: 'private key used to sign commits'
-        required: true
-      github_pat:
-        description: 'The pccibot PAT that will authenticate to GitHub for pushing the tag'
+        description: 'private key used to sign commits & authenticate to GitHub'
         required: true
 
 env:
@@ -60,6 +57,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           ref: ${{ inputs.base-branch }}
+          ssh-key: "${{ secrets.ssh_private_key }}"
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -85,5 +83,3 @@ jobs:
           git config --global tag.gpgsign true
       - name: create git tag + push it
         run: bundle exec rake release:tag_and_push
-        env:
-          GITHUB_TOKEN: "${{ secrets.github_pat }}"

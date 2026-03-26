@@ -79,5 +79,6 @@ jobs:
           git config --global gpg.format ssh
           git config --global user.signingkey ~/.ssh/github_actions
           git config --global commit.gpgsign true
+          git config --global tag.gpgsign true
       - name: create git tag + push it
         run: bundle exec rake release:tag_and_push

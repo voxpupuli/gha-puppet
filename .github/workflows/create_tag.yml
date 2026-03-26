@@ -49,7 +49,10 @@ jobs:
     defaults:
       run:
         working-directory: ${{ inputs.working-directory }}
-    name: 'Prepare Release'
+    name: 'create git tag & push it'
+    # `environment` enables better auditing and fine grained permissions
+    # https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/control-deployments
+    environment: tag-creation
     runs-on: ubuntu-24.04
     if: github.repository_owner == inputs.allowed_owner
     steps:

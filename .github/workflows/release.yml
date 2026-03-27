@@ -32,6 +32,9 @@ jobs:
         working-directory: ${{ inputs.working-directory }}
     name: 'Puppet Forge'
     runs-on: ubuntu-24.04
+    # `environment` enables better auditing and fine grained permissions
+    # https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/control-deployments
+    environment: release
     if: github.repository_owner == inputs.allowed_owner
     steps:
       - name: Checkout repository

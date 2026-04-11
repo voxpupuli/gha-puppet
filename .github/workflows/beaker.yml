@@ -81,6 +81,16 @@ on:
         default: ubuntu-24.04
         required: false
         type: string
+      unit_use_container:
+        description: whether to use voxbox
+        default: false
+        required: false
+        type: boolean
+      unit_container_image:
+        description: the container image to use for unit tests when unit_use_container is true
+        default: ghcr.io/voxpupuli/voxbox:8.24.2-main
+        required: false
+        type: string
       acceptance_runs_on:
         description: the runner group used for acceptance jobs run on
         default: ubuntu-24.04
@@ -138,6 +148,7 @@ jobs:
           COLLECTION: ${{ inputs.beaker_collection }}
 
   unit:
+    if: ${{ !inputs.unit_use_container }}
     defaults:
       run:
         working-directory: ${{ inputs.working-directory }}
@@ -169,6 +180,35 @@ jobs:
           working-directory: ${{ inputs.working-directory }}
       - name: Display Ruby environment
         run: bundle env
+      - name: Run tests
+        run: bundle exec rake parallel_spec
+
+  unit_container:
+    if: ${{ inputs.unit_use_container }}
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+    needs: setup_matrix
+    runs-on: ${{ inputs.unit_runs_on }}
+    timeout-minutes: ${{ inputs.timeout_minutes }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{fromJson(needs.setup_matrix.outputs.puppet_unit_test_matrix)}}
+    container:
+      image: ${{ inputs.unit_container_image }}
+    env:
+      BUNDLE_WITHOUT: development:system_tests:release
+      OPENVOX_GEM_VERSION: "~> ${{ matrix.puppet }}.0"
+    name: ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }}) [container]
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install build dependencies
+        run: apk add --no-cache build-base
+      - name: Show bundler config
+        run: bundle config list
+      - name: Install bundle dependencies
+        run: bundle install
       - name: Run tests
         run: bundle exec rake parallel_spec
 
@@ -229,6 +269,7 @@ jobs:
     if: always()
     needs:
       - unit
+      - unit_container
       - acceptance
     runs-on: ubuntu-24.04
     name: Test suite
@@ -236,4 +277,5 @@ jobs:
       - name: Decide whether the needed jobs succeeded or failed
         uses: re-actors/alls-green@release/v1
         with:
+          allowed-skips: ${{ inputs.unit_use_container && 'unit' || 'unit_container' }}
           jobs: ${{ toJSON(needs) }}

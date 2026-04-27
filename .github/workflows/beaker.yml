@@ -133,7 +133,9 @@ jobs:
         if: ${{ inputs.rubocop }}
       - name: Setup Test Matrix
         id: get-outputs
-        run: bundle exec metadata2gha --domain ${{ inputs.domain }} --beaker-facter "${{ inputs.beaker_facter }}" --beaker-hosts "${{ inputs.beaker_hosts }}" --collection "${{ inputs.beaker_collection }}"
+        run: bundle exec metadata2gha --domain ${{ inputs.domain }} --beaker-facter "${{ inputs.beaker_facter }}" --beaker-hosts "${{ inputs.beaker_hosts }}" ${COLLECTION:+--collection "${COLLECTION}"}
+        env:
+          COLLECTION: ${{ inputs.beaker_collection }}
 
   unit:
     defaults:

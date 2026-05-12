@@ -111,14 +111,14 @@ jobs:
       OPENVOX_GEM_VERSION: ">= 7.0"
       BEAKER_STAGING_VERSION: ${{ inputs.beaker_staging_version }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - name: install additional packages
         if: ${{ inputs.additional_packages != '' }}
         run: |
           sudo apt-get update
           sudo apt-get install -y ${{ inputs.additional_packages }}
       - name: Setup ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@9eb537ca036ebaed86729dcb9309076e4c5c3b74 # v1.314.0
         with:
           ruby-version: '3.2'
           bundler-cache: true
@@ -154,14 +154,14 @@ jobs:
       OPENVOX_GEM_VERSION: "~> ${{ matrix.puppet }}.0"
     name: ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }})
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - name: install additional packages
         if: ${{ inputs.additional_packages != '' }}
         run: |
           sudo apt-get update
           sudo apt-get install -y ${{ inputs.additional_packages }}
       - name: Setup ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@9eb537ca036ebaed86729dcb9309076e4c5c3b74 # v1.314.0
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
@@ -188,7 +188,7 @@ jobs:
         include: ${{fromJson(needs.setup_matrix.outputs.puppet_beaker_test_matrix)}}
     name: "${{ matrix.name }}"
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - name: disable apparmor
         run: |
           # https://bugs.launchpad.net/ubuntu/+source/apparmor/+bug/2093797
@@ -212,7 +212,7 @@ jobs:
           sudo apt-get install -y --no-install-recommends vagrant vagrant-libvirt libvirt-daemon-system libvirt-daemon qemu-system-x86 qemu-utils dnsmasq
           sudo chmod 666 /var/run/libvirt/libvirt-sock
       - name: Setup ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@9eb537ca036ebaed86729dcb9309076e4c5c3b74 # v1.314.0
         with:
           ruby-version: '3.2'
           bundler-cache: true

@@ -86,9 +86,17 @@ on:
         default: ubuntu-24.04
         required: false
         type: string
+      upstream_repo_auth_id:
+        description: id/user to access upstream repo/download site
+        default: ''
+        required: false
+        type: string
     secrets:
       beaker_hcloud_token:
         description: token to access the Hetzner Cloud API
+        required: false
+      upstream_repo_auth_secret:
+        description: token/password to access upstream repo/download site
         required: false
 
 env:
@@ -182,6 +190,8 @@ jobs:
       BUNDLE_WITHOUT: development:test:release
       BEAKER_HCLOUD_TOKEN: '${{ secrets.beaker_hcloud_token }}'
       BEAKER_STAGING_VERSION: ${{ inputs.beaker_staging_version }}
+      BEAKER_UPSTREAM_REPO_AUTH_ID: '${{ inputs.upstream_repo_auth_id }}'
+      BEAKER_UPSTREAM_REPO_AUTH_SECRET: '${{ secrets.upstream_repo_auth_secret }}'
     strategy:
       fail-fast: false
       matrix:

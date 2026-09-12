@@ -34,6 +34,11 @@ on:
         default: ubuntu-24.04
         required: false
         type: string
+      setup_matrix_runs_on:
+        description: the runner group used for the matrix generation and static code validation
+        default: ubuntu-24.04
+        required: false
+        type: string
 
 jobs:
   setup_matrix:
@@ -41,7 +46,7 @@ jobs:
       run:
         working-directory: ${{ inputs.working-directory }}
     name: Static validations
-    runs-on: ubuntu-24.04
+    runs-on: ${{ inputs.setup_matrix_runs_on }}
     timeout-minutes: ${{ inputs.timeout_minutes }}
     outputs:
       puppet_unit_test_matrix: ${{ steps.get-outputs.outputs.puppet_unit_test_matrix }}

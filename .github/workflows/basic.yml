@@ -39,6 +39,11 @@ on:
         default: ubuntu-24.04
         required: false
         type: string
+      test_suite_validate_runs_on:
+        description: the runner group used for our validation job
+        default: ubuntu-24.04
+        required: false
+        type: string
 
 jobs:
   setup_matrix:
@@ -118,7 +123,7 @@ jobs:
   tests:
     if: always()
     needs: unit
-    runs-on: ubuntu-24.04
+    runs-on: ${{ inputs.test_suite_validate_runs_on }}
     name: Test suite
     steps:
       - name: Decide whether the needed jobs succeeded or failed

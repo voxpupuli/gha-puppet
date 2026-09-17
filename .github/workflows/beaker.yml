@@ -91,6 +91,11 @@ on:
         default: ubuntu-24.04
         required: false
         type: string
+      test_suite_validate_runs_on:
+        description: the runner group used for our validation job
+        default: ubuntu-24.04
+        required: false
+        type: string
     secrets:
       beaker_hcloud_token:
         description: token to access the Hetzner Cloud API
@@ -235,7 +240,7 @@ jobs:
     needs:
       - unit
       - acceptance
-    runs-on: ubuntu-24.04
+    runs-on: ${{ inputs.test_suite_validate_runs_on }}
     name: Test suite
     steps:
       - name: Decide whether the needed jobs succeeded or failed

@@ -96,6 +96,11 @@ on:
         default: ubuntu-24.04
         required: false
         type: string
+      disable_apparmor:
+        description: disable apparmor on github runners
+        default: true
+        required: false
+        type: boolean
     secrets:
       beaker_hcloud_token:
         description: token to access the Hetzner Cloud API
@@ -200,6 +205,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: disable apparmor
+        if: ${{ inputs.disable_apparmor }}
         run: |
           # https://bugs.launchpad.net/ubuntu/+source/apparmor/+bug/2093797
           sudo aa-teardown || true

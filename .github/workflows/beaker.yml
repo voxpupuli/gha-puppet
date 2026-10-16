@@ -39,6 +39,11 @@ on:
         default: true
         required: false
         type: boolean
+      install_lima_dependencies:
+        description: lima is a qemu wrapper to provide VM setup such as vagrant
+        default: true
+        required: false
+        type: boolean
       beaker_facter:
         description: Expand the Beaker matrix based on a fact
         default: 'false'
@@ -227,6 +232,20 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends vagrant vagrant-libvirt libvirt-daemon-system libvirt-daemon qemu-system-x86 qemu-utils dnsmasq
           sudo chmod 666 /var/run/libvirt/libvirt-sock
+      - name: Setup lima-vm qemu wrapper
+        uses: lima-vm/lima-actions/setup@v1
+        id: lima-actions-setup
+      - name: test lima
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/lima
+          key: lima-${{ steps.lima-actions-setup.outputs.version }}
+      - name: lima start vm
+        run: limactl start --plain --name=default --cpus=1 --memory=1 template://fedora
+      - name: lima provide host->guest synchronisation
+        run: rsync -a -e ssh . lima-default:/tmp/repo
+      - name: lima proove successful copy
+        run: ssh lima-default ls -l /tmp/repo
       - name: Setup ruby
         uses: ruby/setup-ruby@651ff0d62c5c79bed6d53ec518387aae20e72c1a # v1.329.0
         with:
